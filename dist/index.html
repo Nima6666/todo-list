@@ -3,13 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Calligraffitti&display=swap" rel="stylesheet">
     <title>To Do List</title>
-<script defer src="todob870b899dc8c46640fa7.js"></script></head>
+<script defer src="todoea68ae30692237d266dd.js"></script></head>
 <body>
     
-    <div class="top"></div>
-    <div class="lside"></div>
-    <div class="content"></div>
+    <div class="top">
+        <h1>ToDo</h1>
+        <button id="addProject">Add New Project</button>
+    </div>
+    <div class="lsideContent">
+        <div class="lside">
+            <h3>All Tasks</h3>
+            <h3>All Projects</h3>
+            <div>Done Tasks</div>
+            <div>Due Tasks</div>
+        </div>
+        <div class="content"></div>
+    </div>
+
+    <div class="form">
+        <form action="#" method="get">
+            <div class="inputs">
+                <div class="project">
+                    <label for="project">Project Name</label>
+                    <input type="text" id="project" required>
+                </div>
+                <div class="date">
+                    <label for="date">Due Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="priority">
+                    <label for="priority">Priority</label>
+                    <select id="priority">
+
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+
+                    </select>
+                </div>
+                <div class="note">
+                    <label for="note">Note</label>
+                    <textarea id="note" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <button type="submit" id="submit">Add</button>
+        </form>
+    </div>
 
 </body>
 </html>

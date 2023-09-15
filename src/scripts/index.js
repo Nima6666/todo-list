@@ -1,1 +1,7 @@
-console.log('akshjdgkajshdgl')
+import Render from './render.js'
+require('../styles/style.css');
+require('./img.js');
+
+
+Render.fill();
+

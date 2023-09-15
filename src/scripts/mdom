@@ -1,0 +1,98 @@
+import Render from "./render";
+import { compareAsc, format } from 'date-fns'
+import { Project, listOfTasks } from "./project";
+import { da } from "date-fns/locale";
+
+const mDom = (() => {
+    const content = document.querySelector('.content');
+    let contentTexts = "";
+
+    const checkPriority = () => {
+        for(let i = 0; i < listOfTasks.length; i++) {
+            if (listOfTasks[i].priority == "high") {
+                (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.7)');
+            } else if (listOfTasks[i].priority == "medium") {
+                (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.3)');
+            }
+        }
+        console.log(listOfTasks);
+    }
+
+
+    const fill = (list, i) => {
+
+        contentTexts += `
+
+                    <div class="project${i}">
+                        <button id = ${i}>Del</button>
+                        <button id = e${i}>Edit</button>
+                        <h2 class="name">${list[i].projectName}</h2>
+                        <div class="name">${list[i].date}</div>
+
+                    </div>
+        
+        `;
+        content.innerHTML = contentTexts;
+
+
+    };
+
+    const resetCotext = () => {
+        contentTexts = "";
+    };
+
+    return {
+        fill,
+        resetCotext,
+        checkPriority
+    }
+
+
+
+})();
+
+
+const buttonHandler = (() => {
+    const dvForm = document.querySelector('.form');
+    
+    function cross() {
+        dvForm.classList.remove('active');
+    }
+
+    const addP = () => {
+
+        dvForm.classList.add('active');
+        const crossBtn = document.querySelector('#cross');
+        crossBtn.addEventListener('click', cross);
+
+    } 
+
+    const submit = () => {
+        let date = (document.querySelector('#date').value)
+        date = date.split('-');
+        date = format(new Date(date[0], date[1], date[2]), 'eeee yyyy-MM-dd');
+        const newProjt = new Project(document.querySelector('#project').value, document.querySelector('#note').value, date, (document.querySelector('#priority').value));
+        (document.querySelector('form')).reset();
+        mDom.resetCotext();
+        Render.fill();
+        cross();
+    }
+    
+
+    return {
+        addP,
+        submit
+    }
+
+})()
+
+
+const newProject = document.querySelector('#addProject');
+const form = document.querySelector('form');
+
+form.addEventListener('submit', buttonHandler.submit);
+
+newProject.addEventListener('click', buttonHandler.addP);
+
+
+export default mDom;
