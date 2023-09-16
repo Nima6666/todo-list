@@ -29,6 +29,7 @@ const Render = (() => {
         });
 
         mDom.checkStat();
+        mDom.taskEventListner();
 
     }
 
@@ -42,6 +43,7 @@ const Render = (() => {
         })
 
         mDom.checkStat();
+        mDom.taskEventListner();
 
     }
 
@@ -55,6 +57,7 @@ const Render = (() => {
         })
 
         mDom.checkStat();
+        mDom.taskEventListner();
 
     }
 

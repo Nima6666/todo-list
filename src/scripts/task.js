@@ -35,6 +35,3 @@ const task2 = new Task ('Learn to Kick underwater', 'Learn Swimming', false);
 const task3 = new Task ('Learn React', 'Learning web dev', false);
 const task12 = new Task ('Leg Day', 'Increase strength', false);
 const task13 = new Task ('Chest Day', 'Increase strength', false);
-
-console.log(listOfProjects);
-console.log(listOfTasks);

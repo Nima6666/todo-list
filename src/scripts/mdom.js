@@ -30,14 +30,28 @@ const mDom = (() => {
         }
     }
 
+    
     const projectEventListner = () => {
-        (document.querySelectorAll('#allprojects > *')).forEach((proj) => {
-            proj.addEventListener('click', () => {
+        (document.querySelectorAll('#allprojects > div')).forEach((proj) => {
+            const btn = document.querySelectorAll('#allprojects > div > button')
+            proj.addEventListener('click', (e) => {
+                if (e.target.nodeName == 'BUTTON' ) {return}
                 buttonHandler.projectClick(proj);
             });
         })
+        taskEventListner()
     }
+    
+    const taskEventListner = () => {
 
+        const tasks = (document.querySelectorAll('#alltasks > *, #donetasks > *, #duetasks > *, #projet > *'))
+
+        tasks.forEach((task) => {
+            console.log(task);
+        })
+
+    }
+    
 
     const fillProjects = (list, i) => {
 
@@ -81,7 +95,8 @@ const mDom = (() => {
         resetCotext,
         checkPriority,
         checkStat,
-        projectEventListner
+        projectEventListner,
+        taskEventListner
     }
 
 
@@ -145,8 +160,7 @@ const buttonHandler = (() => {
 
     const projectClick = (proj) => {
         const index = (((proj.classList.value).split('t'))[1]);
-        (document.querySelector('.content')).id = 'project';
-        console.log(listOfProjects[index].task);
+        (document.querySelector('.content')).id = 'projet';
         Render.fillTasks(listOfProjects[index].task);
 
         const nav = document.createElement('div');
