@@ -1,5 +1,5 @@
-require('./project.js');
-import { listOfProjects, listOfTasks } from './project.js';
+import { listOfTasks } from './task.js';
+import { listOfProjects} from './project.js';
 import mDom from './mdom';
 
 
@@ -15,20 +15,47 @@ const Render = (() => {
         }
         
         mDom.checkPriority();
+        mDom.projectEventListner();
 
     }
 
-    const fillTasks = () => {
+    const fillTasks = (tasks) => {
         mDom.resetCotext();
+
+        if (!tasks.length) {alert('ladooooooooooooooooo')}
+        
+        tasks.forEach((task, i) => {
+            mDom.fillTasks(task, i)
+        });
+
+        mDom.checkStat();
 
     }
 
     const fillDoneTasks = () => {
         mDom.resetCotext();
+
+        listOfTasks.forEach((task, i) => {
+            if (task.done) {
+                mDom.fillTasks(task, i);
+            }
+        })
+
+        mDom.checkStat();
+
     }
 
     const fillDueTasks = () => {
         mDom.resetCotext();
+
+        listOfTasks.forEach((task, i) => {
+            if (!task.done) {
+                mDom.fillTasks(task, i);
+            }
+        })
+
+        mDom.checkStat();
+
     }
 
     return {

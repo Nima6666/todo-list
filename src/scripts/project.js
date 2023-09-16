@@ -10,6 +10,7 @@ export class Project {
         this.notes = notes;
         this.date = date;
         this.priority = priority;
+        this.task = [];
         listOfProjects.push(this);
     };
 

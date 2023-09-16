@@ -189,14 +189,14 @@ form > img:hover {
 
 .content#allprojects {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(30vw, 1fr));
     gap: 20px;
 }
 
 .content#allprojects > div {
     position: relative;
     background: #DAC0A3;
-    height: 300px;
+    height: 44vh;
     border-radius: 7px;
     display: flex;
     justify-content: center;
@@ -248,3 +248,38 @@ form > img:hover {
     background: rgba(0, 189, 0, 0.8);
 }
 
+.content#alltasks, .content#donetasks, .content#duetasks, .content#project {
+    display: block;
+}
+
+.content#alltasks > div, .content#donetasks > div, .content#duetasks > div, .content#project > div {
+    background: rgb(247, 245, 243);;
+    padding:0px 50px 0px 50px;
+    margin: 1px 0px 1px 0px;
+    border-radius: 5px;
+    border: 1px solid papayawhip;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+#navi{
+    justify-content: space-between;
+}
+
+#navi > button {
+    height: 60%;
+    width: 20%;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+#navi > button:hover {
+    border: 1px solid brown;
+}
+
+#navi > button:active {
+    border: 1px solid burlywood;
+    background: #d3d1d1;
+}
