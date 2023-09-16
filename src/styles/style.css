@@ -27,6 +27,21 @@ body {
     box-shadow: 5px 0px rgba(0, 0, 0, 0.4);
 }
 
+.lside > * {
+    transition: 0.4s ease all;
+}
+
+.lside > *:hover {
+    transform: scale(1.2) translateX(5px) translateY(-5px);
+    transition: 0.4s ease all;
+    cursor: pointer;
+}
+
+.lside >  *.active {
+    text-decoration: underline;
+    transform: scale(1.2) translateX(5px) translateY(-5px)
+}
+
 .top {
     display: flex;
     height: 10vh;
@@ -169,12 +184,16 @@ form > img:hover {
     flex: 1;
     background: rgb(226, 220, 211);
     overflow-y: scroll;
+
+}
+
+.content#allprojects {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
-.content > div {
+.content#allprojects > div {
     position: relative;
     background: #DAC0A3;
     height: 300px;
@@ -183,9 +202,17 @@ form > img:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    transition: 0.4s ease all;
 }
 
-.content > div button {
+.content#allprojects > div:hover {
+    transition: 0.4s ease all;
+    transform: translateX(-5px) translateY(-5px);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.content#allprojects > div button {
     position: absolute;
     height: 40px;
     width: 60px;
@@ -196,26 +223,26 @@ form > img:hover {
     box-shadow: 5px 5px rgba(138, 137, 137, 0.8);
 }
 
-.content > div:hover button {
+.content#allprojects > div:hover button {
     transition: 0.3s ease all;
     opacity: 1;
 }
 
-.content > div button:hover {
+.content#allprojects > div button:hover {
     box-shadow: 3px 3px rgba(138, 137, 137, 0.8);
 }
 
-.content > div button:active {
+.content#allprojects > div button:active {
     box-shadow: 1px 1px rgba(138, 137, 137, 0.8);
 }
 
-.content > div button:first-of-type {
+.content#allprojects > div button:first-of-type {
     top: 5px;
     right: 100px;
     background: rgba(214, 98, 98, 0.8);
 }
 
-.content > div button:last-of-type {
+.content#allprojects > div button:last-of-type {
     top: 5px;
     right: 10px;
     background: rgba(0, 189, 0, 0.8);

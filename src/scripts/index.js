@@ -3,5 +3,5 @@ require('../styles/style.css');
 require('./img.js');
 
 
-Render.fill();
+Render.fillProjects();
 

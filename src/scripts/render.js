@@ -1,23 +1,41 @@
 require('./project.js');
-import { listOfTasks } from './project.js';
+import { listOfProjects, listOfTasks } from './project.js';
 import mDom from './mdom';
 
 
 
 const Render = (() => {
 
-    const fill = () => {
-
-        for(let i = 0; i < listOfTasks.length; i++) {
-            mDom.fill(listOfTasks, i);
+    const fillProjects = () => {
+        (document.querySelector('.content')).id = "allprojects";
+        (document.querySelector('.lside > h3:last-of-type')).classList.value = 'active';
+        mDom.resetCotext();
+        for(let i = 0; i < listOfProjects.length; i++) {
+            mDom.fillProjects(listOfProjects, i);
         }
         
         mDom.checkPriority();
 
     }
 
+    const fillTasks = () => {
+        mDom.resetCotext();
+
+    }
+
+    const fillDoneTasks = () => {
+        mDom.resetCotext();
+    }
+
+    const fillDueTasks = () => {
+        mDom.resetCotext();
+    }
+
     return {
-        fill
+        fillProjects,
+        fillTasks,
+        fillDoneTasks,
+        fillDueTasks
     }
 
 })()

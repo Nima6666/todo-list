@@ -1,25 +1,26 @@
 import Render from "./render";
 import { compareAsc, format } from 'date-fns'
-import { Project, listOfTasks } from "./project";
+import { Project, listOfProjects } from "./project";
+import { Task } from "./task";
 import { da } from "date-fns/locale";
+import { render } from "sass";
 
 const mDom = (() => {
     const content = document.querySelector('.content');
     let contentTexts = "";
 
     const checkPriority = () => {
-        for(let i = 0; i < listOfTasks.length; i++) {
-            if (listOfTasks[i].priority == "high") {
+        for(let i = 0; i < listOfProjects.length; i++) {
+            if (listOfProjects[i].priority == "high") {
                 (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.7)');
-            } else if (listOfTasks[i].priority == "medium") {
+            } else if (listOfProjects[i].priority == "medium") {
                 (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.3)');
             }
         }
-        console.log(listOfTasks);
     }
 
 
-    const fill = (list, i) => {
+    const fillProjects = (list, i) => {
 
         contentTexts += `
 
@@ -41,10 +42,15 @@ const mDom = (() => {
         contentTexts = "";
     };
 
+    const resetContent = () => {
+        content.textContent = "";
+    }
+
     return {
-        fill,
+        fillProjects,
         resetCotext,
-        checkPriority
+        checkPriority,
+        resetContent
     }
 
 
@@ -73,15 +79,44 @@ const buttonHandler = (() => {
         date = format(new Date(date[0], date[1], date[2]), 'eeee yyyy-MM-dd');
         const newProjt = new Project(document.querySelector('#project').value, document.querySelector('#note').value, date, (document.querySelector('#priority').value));
         (document.querySelector('form')).reset();
-        mDom.resetCotext();
-        Render.fill();
+        Render.fillProjects();
         cross();
+    }
+
+    const lside = (ev) => {
+        (document.querySelectorAll('.lside > *')).forEach((comp) => {
+            comp.classList.value ? comp.classList.remove('active') : 0;
+        })
+        ev.target.classList.add('active');
+        (document.querySelector('.content')).id = (ev.target.innerHTML.split(' ').join('')).toLowerCase();
+
+        if (document.querySelector('.content').id == 'alltasks') {
+
+            mDom.resetContent();
+            Render.fillTasks();
+
+        } else if (document.querySelector('.content').id == 'allprojects') {
+
+            mDom.resetContent();
+            Render.fillProjects();
+
+        } else if (document.querySelector('.content').id == 'donetasks') {
+
+            mDom.resetContent();
+            Render.fillDoneTasks();
+
+        } else {
+            mDom.resetContent();
+            Render.fillDueTasks();
+        }
+
     }
     
 
     return {
         addP,
-        submit
+        submit,
+        lside
     }
 
 })()
@@ -89,6 +124,10 @@ const buttonHandler = (() => {
 
 const newProject = document.querySelector('#addProject');
 const form = document.querySelector('form');
+const lside = document.querySelectorAll('.lside > *');
+
+
+lside.forEach((side) => side.addEventListener('click', buttonHandler.lside));
 
 form.addEventListener('submit', buttonHandler.submit);
 

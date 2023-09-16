@@ -2,7 +2,7 @@ import { compareAsc, format } from 'date-fns'
 
 
 
-export let listOfTasks = [];
+export let listOfProjects = [];
 
 export class Project {
     constructor (projectName, notes, date, priority ) {
@@ -10,7 +10,7 @@ export class Project {
         this.notes = notes;
         this.date = date;
         this.priority = priority;
-        listOfTasks.push(this);
+        listOfProjects.push(this);
     };
 
     
