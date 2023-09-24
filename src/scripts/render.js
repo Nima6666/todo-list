@@ -16,6 +16,7 @@ const Render = (() => {
         
         mDom.checkPriority();
         mDom.projectEventListner();
+        mDom.projectBtnListener();
 
     }
 
@@ -28,8 +29,9 @@ const Render = (() => {
             mDom.fillTasks(task, i)
         });
 
-        mDom.checkStat();
+        mDom.checkStat(tasks);
         mDom.taskEventListner();
+        mDom.taskBtnListener();
 
     }
 
@@ -42,8 +44,9 @@ const Render = (() => {
             }
         })
 
-        mDom.checkStat();
+        mDom.checkStat(listOfTasks);
         mDom.taskEventListner();
+        mDom.taskBtnListener();
 
     }
 
@@ -56,8 +59,9 @@ const Render = (() => {
             }
         })
 
-        mDom.checkStat();
+        mDom.checkStat(listOfTasks);
         mDom.taskEventListner();
+        mDom.taskBtnListener();
 
     }
 
