@@ -351,3 +351,9 @@ form > img:hover {
     color: green;
     font-size: large;
 }
+
+#priority {
+    height: 40px;
+    width: 100px;
+    font-size: large;
+}
