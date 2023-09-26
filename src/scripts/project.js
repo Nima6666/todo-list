@@ -25,21 +25,9 @@ export class Project {
             if (this.projectName === listOfTasks[i].target) {
                 listOfTasks[i].del()
             }
-        }         
+        }    
 
         listOfProjects.splice(listOfProjects.indexOf(this), 1)
-
-    }
-
-    edit() {
-        
-        buttonHandler.addPedit(this);
-        document.querySelector('form').id = 'edi';
-        document.querySelector('#submit').addEventListener('click', () => {
-            console.log(this)
-            buttonHandler.submitEdit(this);
-        })
-
 
     }
     

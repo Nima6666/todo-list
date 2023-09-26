@@ -9,27 +9,43 @@ import circleImg from '../assets/circle.png'
 import { render } from "sass";
 
 const mDom = (() => {
+
+    let editing;
+
+    let currentProject;
     const content = document.querySelector('.content');
     let contentTexts = "";
+    let flagForTaskForm;
 
     const checkPriority = () => {
+        editing = false;
         for(let i = 0; i < listOfProjects.length; i++) {
             if (listOfProjects[i].priority == "high") {
                 (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.7)');
             } else if (listOfProjects[i].priority == "medium") {
                 (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(255, 0, 0, 0.3)');
             }
+
+            if (listOfProjects[i].task.length > 0 && listOfProjects[i].task.every((t) => t.done == true)) {
+                (document.querySelector(`.project${i}`)).setAttribute('style', 'background: rgba(0, 255, 0, 0.4)');
+            }
+
         }
+
     }
 
     const checkStat = (tasks) => {
 
-        for(let i = 0; i < tasks.length-1 ; i++) {
+        for(let i = 0; i < tasks.length ; i++) {
 
             if (tasks[i].done) {
                 let doc = document.querySelector(`.task${i}`);
                 if (!doc) return;
                 doc.setAttribute('style', 'text-decoration: line-through');
+                let circ = document.querySelector(`.task${i} > .iimages > img:last-of-type`);
+                if (circ) {
+                    circ.setAttribute('style', 'background: green;')
+                }
             }
         }
     }
@@ -41,35 +57,29 @@ const mDom = (() => {
             proj.addEventListener('click', (e) => {
                 if (e.target.nodeName == 'BUTTON' ) {return}
                 buttonHandler.projectClick(proj);
+                currentProject = listOfProjects[(proj.classList.value).split('t')[1]]
             });
         })
         taskEventListner()
     }
     
     const taskEventListner = () => {
-
+        
+        
         const tasksFImg = document.querySelectorAll('.iimages > img')
-
+        
         tasksFImg.forEach((taskImg, key) => taskImg.addEventListener('click', () => {
+            if (editing) {return}
             buttonHandler.taskButtons(taskImg, key);
         }))
 
     }
 
     const projectBtnListener = () => {
-        const delBttns = document.querySelectorAll('#allprojects > div >button:first-of-type');
-        const editBttns = document.querySelectorAll('#allprojects > div >button:last-of-type');
+        const delBttns = document.querySelectorAll('#allprojects > div >button');
         delBttns.forEach((bttn) => {
             bttn.addEventListener('click', buttonHandler.projDelbtn);
         })
-
-        editBttns.forEach((bttn) => {
-            bttn.addEventListener('click', buttonHandler.projEditbtn);
-        })
-    }
-
-    const taskBtnListener = () => {
-
     }
     
 
@@ -79,9 +89,8 @@ const mDom = (() => {
 
                     <div class="project${i}">
                         <button id = ${i}>Del</button>
-                        <button id = e${i}>Edit</button>
                         <h2 class="name">${list[i].projectName}</h2>
-                        <div class="name">${list[i].date}</div>
+                        <div>${list[i].date}</div>
                     </div>
         
         `;
@@ -92,6 +101,8 @@ const mDom = (() => {
 
     const fillTasks = (task, i) => {
 
+        
+
         const imgHtml = `<div class="iimages">
                             <img src=${delImg} id="d">
                             <img src=${editImg} id = "e">
@@ -101,7 +112,7 @@ const mDom = (() => {
         
                     <div class="task${i}">
                         ${task.description}
-                        ${imgHtml}
+                        ${task.target ? "" : imgHtml}
                     </div>
 
         `;
@@ -111,9 +122,63 @@ const mDom = (() => {
     }
 
     const resetCotext = () => {
+        flagForTaskForm = false
         contentTexts = "";
         content.innerHTML = contentTexts;
     };
+
+    const addTask = (e) => {
+        if (flagForTaskForm) {return}
+        if (editing) {return}
+        flagForTaskForm = true
+        const taskForm = document.createElement('div')
+        taskForm.id = 'taskForm'
+        taskForm.innerHTML = `
+                <input type="text" id="taskName" placeholder = "New Task Name"></input>
+                <button type="button" id="aaa">Add</button>
+                <button type="button" id="ccc">Cancel</button>
+            `;
+        content.appendChild(taskForm);
+        document.querySelector('#aaa').addEventListener('click', () => {
+            if (!document.querySelector('#taskName').value) {alert(`this field cannot be empty`); content.removeChild(taskForm); flagForTaskForm = false; return;}
+            const newTask = new Task(document.querySelector('#taskName').value, currentProject.projectName, false)
+            newTask.checkTarget()
+            Render.fillTasks(currentProject.task)
+            buttonHandler.projectClick(currentProject.task)
+        })
+        document.querySelector('#ccc').addEventListener('click', () => {
+            content.removeChild(taskForm)
+            flagForTaskForm = false
+        })
+
+    }
+
+    const editTask = (img, task) => {
+        editing = true;
+        const taskElem = img.parentElement.parentElement
+
+        const name = taskElem.textContent
+        taskElem.innerHTML = `
+                            <input name="taskEdit" value="${name.trim()}">
+                            <button name="ok">ok</button>
+                            `
+
+        document.querySelector('[name="ok"]').addEventListener('click', () => {
+            const edited = document.querySelector('[name="taskEdit"]').value
+            task.edit(edited);
+            task.sc('projet');
+            editing = false;
+        })
+
+        
+    }
+    
+    const fillNote = (note) => {
+        const noteDiv = document.createElement('div');
+        noteDiv.id = 'notes'
+        noteDiv.textContent = `Note: ${note}`;
+        content.appendChild(noteDiv);
+    }
 
     return {
         fillProjects,
@@ -124,7 +189,9 @@ const mDom = (() => {
         projectEventListner,
         taskEventListner,
         projectBtnListener,
-        taskBtnListener
+        addTask,
+        editTask,
+        fillNote
     }
 
 
@@ -150,39 +217,8 @@ export const buttonHandler = (() => {
         
     } 
 
-    const addPedit = (proj) => {
-
-        dvForm.classList.add('active');
-        const crossBtn = document.querySelector('#cross');
-        crossBtn.addEventListener('click', cross);
-
-        document.querySelector('#project').value = proj.projectName;
-        document.querySelector('#note').value = proj.notes
-        document.querySelector('#date').value = (proj.date.split(' ')[1])
-        document.querySelector('#priority').value = proj.priority
-    }
-
-    const submitEdit = (proj) => {
-        let dateEd = (document.querySelector('#date').value);
-        const dateEdited = dateEd.split('-');
-        console.log(dateEdited);
-        console.log(proj)
-        dateEd = format(new Date(dateEdited[0], dateEdited[1], dateEdited[2]), 'eeee yyyy-MM-dd');
-            
-
-        proj.projectName = document.querySelector('#project').value
-        proj.notes = document.querySelector('#note').value
-        proj.date = dateEd;
-        proj.priority = document.querySelector('#priority').value;
-
-        Render.fillProjects();
-        cross();
-    }
-
     const submit = (a) => {
-        console.log(a.target.id)
         if (a.target.id !== 'sub') {return}
-        alert('sub')
         let date = (document.querySelector('#date').value)
         date = date.split('-');
         date = format(new Date(date[0], date[1], date[2]), 'eeee yyyy-MM-dd');
@@ -224,9 +260,11 @@ export const buttonHandler = (() => {
     }
 
     const projectClick = (proj) => {
-        const index = (((proj.classList.value).split('t'))[1]);
-        (document.querySelector('.content')).id = 'projet';
-        Render.fillTasks(listOfProjects[index].task);
+        if (proj.classList && proj.classList.value) {
+            const index = (((proj.classList.value).split('t'))[1]);
+            (document.querySelector('.content')).id = 'projet';
+            Render.fillTasks(listOfProjects[index].task);
+        }
 
         const nav = document.createElement('div');
         nav.id = 'navi';
@@ -237,11 +275,16 @@ export const buttonHandler = (() => {
                     
         `;
 
+        
         document.querySelector('.content').append(nav)
 
         const backBtn = document.querySelector('#back');
 
+        const addTskBtn = document.querySelector('#addtask')
+
         backBtn.addEventListener('click', Render.fillProjects)
+
+        addTskBtn.addEventListener('click', mDom.addTask);
 
     }
 
@@ -250,28 +293,27 @@ export const buttonHandler = (() => {
         Render.fillProjects()
     }
 
-    const projEditbtn = (e) => {
-        listOfProjects[((e.target.id).replace('e', ''))].edit()
-        console.log(e.target.id)
-        Render.fillProjects()
-    }
-
-    const taskButtons = (taskImg, key) => {
+    const taskButtons = (taskImg) => {
         const scope = ((taskImg.parentElement).parentElement.parentElement).id
-        listOfTasks.forEach((task) => {
-            if (task.description == ((taskImg.parentElement).parentElement.textContent).trim()) {
+        for (let i = listOfTasks.length - 1; i >= 0; i--) {
+            const task = listOfTasks[i];
+            const taskDescription = ((taskImg.parentElement).parentElement.textContent).trim();
+        
+            if (task.description == taskDescription) {
                 if (taskImg.id == 'd') {
-                    task.del()
-                    task.sc(scope)
+                    task.del();
+                    task.sc(scope);
+                    return
                 } else if (taskImg.id == 'e') {
-                    task.edit()
-                    task.sc(scope)
-                } else {
-                    task.tick()
-                    task.sc(scope)
+                    mDom.editTask(taskImg, task);
+                    return
+                } else if (taskImg.id == 'c'){
+                    task.tick();
+                    task.sc(scope);
+                    return
                 }
             }
-        })
+        }
     }
     
 
@@ -281,10 +323,7 @@ export const buttonHandler = (() => {
         lside,
         projectClick,
         projDelbtn,
-        projEditbtn,
-        addPedit,
-        taskButtons,
-        submitEdit
+        taskButtons
     }
 
 })()

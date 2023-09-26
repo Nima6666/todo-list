@@ -1,3 +1,4 @@
+import mDom, { buttonHandler } from "./mdom";
 import { listOfProjects } from "./project"
 import Render from "./render";
 
@@ -9,44 +10,51 @@ export class Task {
         this.description = description;
         this.target = target;
         this.done = done;
-        this.check()
-        listOfTasks.push(this);
+        let editin;
     };
     
-    check(scope) {
-        let a;
-
-        if (scope) {
-            listOfProjects.forEach((obj) => {
-                obj.task.forEach((one) => {
-                    if (one.description == this.description) {
-                        console.log(one, this);
-                        a = one;
-                    }
-                })
-            })
-            return a;
-        } else {
-
-            listOfProjects.forEach((obj) => {
-                if (obj.projectName == this.target) {
-                    obj.task.push({description: this.description, done: this.done});
-                }
-            })
-        }
+    checkTarget() {
+        
+        listOfProjects.forEach((obj) => {
+            if (obj.projectName == this.target) {
+                obj.task.push({description: this.description, done: this.done});
+            }
+        })
+        listOfTasks.push(this);
     }
 
     del() {
-        listOfTasks.splice(listOfTasks.indexOf(this), 1);
-        // console.log(this.check(1))
+        listOfTasks = listOfTasks.filter(task => task !== this);
+        listOfProjects.forEach((project) => {
+            project.task = project.task.filter(task => task.description !== this.description);
+        });
     }
 
-    edit() {
-        
+    edit(editedTask) {
+        for (let i = listOfProjects.length-1; i >= 0; i--) {
+            if (listOfProjects[i].projectName == this.target) {
+                listOfProjects[i].task.forEach((item) => {
+                    if (item.description == this.description) {
+                        item.description = editedTask
+                    }
+                })
+            }
+        }
+        listOfTasks.splice(listOfTasks.indexOf(this), 1, new Task(editedTask.trim(), this.target, this.done, 'edit'));
     }
     
     tick() {
-        
+        this.done = !this.done;
+        for (let i = listOfProjects.length-1; i >= 0; i--) {
+            if (listOfProjects[i].projectName == this.target) {
+                listOfProjects[i].task.forEach((item) => {
+                    if (item.description == this.description) {
+                        item.done = this.done
+                    }
+                })
+            }
+        }
+
     }
 
     sc(scope) {
@@ -54,12 +62,10 @@ export class Task {
         if (scope == 'alltasks') {
             Render.fillTasks(listOfTasks);
         } else if (scope == 'projet') {
-            listOfProjects.forEach((proj) => {
-                if (proj.projectName == this.target) {
-                    console.log(proj.task.indexOf(this.check(1)));
-                    (proj.task).splice((proj.task).indexOf(this.check(1)), 1)
-                    this.del();
-                    Render.fillTasks(proj.task);
+            listOfProjects.forEach((project) => {
+                if (project.projectName === this.target) {
+                    Render.fillTasks(project.task)
+                    buttonHandler.projectClick(project.task)
                 }
             })
         } else if (scope == 'donetasks') {
@@ -86,3 +92,16 @@ const task2 = new Task ('Learn to Kick underwater', 'Learn Swimming', false);
 const task3 = new Task ('Learn React', 'Learning web dev', false);
 const task12 = new Task ('Train your Legs', 'Increase strength', false);
 const task13 = new Task ('Chest Day', 'Increase strength', false);
+
+task1.checkTarget()
+task2.checkTarget()
+task3.checkTarget()
+task4.checkTarget()
+task5.checkTarget()
+task6.checkTarget()
+task7.checkTarget()
+task8.checkTarget()
+task9.checkTarget()
+task10.checkTarget()
+task12.checkTarget()
+task13.checkTarget()

@@ -23,16 +23,22 @@ const Render = (() => {
     const fillTasks = (tasks) => {
         mDom.resetCotext();
 
-        if (!tasks.length) {alert('ladooooooooooooooooo')}
+        if (!tasks.length) {alert('Add Tasks to your Project')}
         
         tasks.forEach((task, i) => {
             mDom.fillTasks(task, i)
         });
 
+        
         mDom.checkStat(tasks);
         mDom.taskEventListner();
-        mDom.taskBtnListener();
-
+        
+        if (tasks.target) {return}
+        listOfProjects.forEach((project) => {
+            if (project.task == tasks) {
+                mDom.fillNote(project.notes);
+            }
+        })
     }
 
     const fillDoneTasks = () => {
@@ -46,7 +52,6 @@ const Render = (() => {
 
         mDom.checkStat(listOfTasks);
         mDom.taskEventListner();
-        mDom.taskBtnListener();
 
     }
 
@@ -61,7 +66,6 @@ const Render = (() => {
 
         mDom.checkStat(listOfTasks);
         mDom.taskEventListner();
-        mDom.taskBtnListener();
 
     }
 

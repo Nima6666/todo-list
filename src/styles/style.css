@@ -184,7 +184,7 @@ form > img:hover {
     flex: 1;
     background: rgb(226, 220, 211);
     overflow-y: scroll;
-
+    position: relative;
 }
 
 .content#allprojects {
@@ -236,16 +236,10 @@ form > img:hover {
     box-shadow: 1px 1px rgba(138, 137, 137, 0.8);
 }
 
-.content#allprojects > div button:first-of-type {
+.content#allprojects > div button {
     top: 5px;
-    right: 100px;
+    right: 50px;
     background: rgba(214, 98, 98, 0.8);
-}
-
-.content#allprojects > div button:last-of-type {
-    top: 5px;
-    right: 10px;
-    background: rgba(0, 189, 0, 0.8);
 }
 
 .content#alltasks, .content#donetasks, .content#duetasks, .content#projet {
@@ -253,7 +247,7 @@ form > img:hover {
 }
 
 .content#alltasks > div, .content#donetasks > div, .content#duetasks > div, .content#projet > div {
-    background: rgb(247, 245, 243);;
+    background: rgb(247, 245, 243);
     padding:0px 50px 0px 50px;
     margin: 1px 0px 1px 0px;
     border-radius: 5px;
@@ -273,7 +267,7 @@ form > img:hover {
     justify-content: space-between;
 }
 
-#navi > button {
+#navi > button , #taskForm > button, [name="ok"]{
     height: 60%;
     width: 20%;
     border: 1px solid black;
@@ -282,11 +276,11 @@ form > img:hover {
 }
 
 
-#navi > button:hover {
+#navi > button:hover, #taskForm > button:hover, [name="ok"]:hover{
     border: 1px solid brown;
 }
 
-#navi > button:active {
+#navi > button:active, #taskForm > button:active , [name="ok"]:active{
     border: 1px solid burlywood;
     background: #d3d1d1;
 }
@@ -311,9 +305,13 @@ form > img:hover {
 }
 
 .iimages {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     text-decoration: none;
     position: absolute;
     right: 20px;
+    width: 30%;
 }
 
 .iimages > img:hover {
@@ -323,4 +321,33 @@ form > img:hover {
 }
 .iimages > img:active {
     background: rgba(0, 0, 0, 0.2);
+}
+.iimages > img:last-of-type {
+    border-radius:50%; 
+    padding:0px;
+}
+
+#taskForm {
+    width: inherit;
+}
+#taskForm > button {
+    width: 100px;
+}
+#taskForm > input, input[name="taskEdit"] {
+    height: 80%;
+    width: 100%;
+    font-size: x-large;
+    border: none;
+    border-radius: 5px;
+    margin: 0px;
+    background: rgb(247, 245, 243);
+}
+#taskForm > input:focus , input[name="taskEdit"]:focus{
+    border: 1px solid green;
+    outline: none;
+}
+
+#notes {
+    color: green;
+    font-size: large;
 }
